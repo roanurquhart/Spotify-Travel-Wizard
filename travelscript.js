@@ -10,7 +10,7 @@ function login() {
 
 function buildHome() {
   let spot_box = '<div class="spotify_container"><p class="spotify_text">Connect to Spotify</p><button type="button" class="spotify_ajax" onclick="login(); return false;">Connect</button></div>';
-  let header = '<header class="page_head">The Travel Wizard<header>';
+  let header = '<header class="page_head">The Sound of Travel<header>';
   let choose = '<p>Choose your destiny</p>';
   let choice_box = '<div id="choice_box"><p class="choices evil"><span id="evil">Air Travel Overlord</span></p><span>   </span><p class="choices good"><span id="good">Naive Vacationer</span></p></div>'
 
