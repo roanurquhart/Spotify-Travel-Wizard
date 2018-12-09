@@ -39,11 +39,11 @@ function buildHome() {
     },
     xhrFields: {withCredentials: true},
     success: (response) => {
-        alert('worked');
+
       }
     });
     buildAirline();
-  })
+  });
 }
 
 
@@ -79,8 +79,8 @@ function buildAirline() {
   }
 
 
-  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Name"></textarea><br>';
-  let but = '<button type="button" class="newAir_btn" onclick="postAirline">Create</button>';
+  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name (Required)"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Logo Url"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Info"></textarea><br>';
+  let but = '<button type="button" class="newAir_btn" onclick="postAirline()">Create</button>';
   let divii = '<div id="creatAir">'+ form+but +'</div>';
   body.append(chooseAir);
   body.append(divi);
@@ -89,6 +89,9 @@ function buildAirline() {
 
 function postAirline() {
   let name = document.getElementById('Airname').value;
+  if (name==="") {
+    alert("The airline name is required. Please try again.");
+  }
   let logo = document.getElementById('logoUrl').value;
   let info = document.getElementById('Airinfo').value;
   $.ajax(api_base + 'airlines',
@@ -106,6 +109,9 @@ function postAirline() {
       success: (response) => {
         }
     });
+    document.getElementById('Airname').value = "";
+    document.getElementById('logoUrl').value = "";
+    document.getElementById('Airinfo').value = "";
 }
 
 
