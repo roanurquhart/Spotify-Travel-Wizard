@@ -40,15 +40,36 @@ function buildAirline() {
   dataType: 'json',
   xhrFields: {withCredentials: true},
   success: (response) => {
-      alert('here');
+      console.log(response);
     }
   });
 
-  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Name"></textarea><br>';
-  let but = '<button type="button" class="newAir_btn" onclick="postAirline">Create</button>';
+  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Airline Logo Url"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Info"></textarea><br>';
+  let but = '<button type="button" class="newAir_btn" onclick="postAirline()">Create</button>';
   let divii = '<div id="creatAir">'+ form+but +'</div>';
   body.append(chooseAir);
   body.append(divi);
   body.append(divii);
+}
 
+function postAirline() {
+  let name = document.getElementById('Airname').value;
+  let logo = document.getElementById('logoUrl').value;
+  let info = document.getElementById('Airinfo').value;
+  $.ajax(api_base + 'airlines',
+    {
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        "airline": {
+                "name": name,
+                "logo_url": logo,
+                "info": info
+              }     
+      },
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+          alert("worked");
+        }
+    });
 }
