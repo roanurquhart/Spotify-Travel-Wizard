@@ -63,10 +63,12 @@ function buildAirline() {
     }
   });
 
+
   let create_curr_airline_div = (airline) => {
 	  let airdiv = $('<div class="airline_name" id="'+ airline.name + '"></div>');
 	  return airdiv;
   }
+
 
   let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Name"></textarea><br>';
   let but = '<button type="button" class="newAir_btn" onclick="postAirline">Create</button>';
