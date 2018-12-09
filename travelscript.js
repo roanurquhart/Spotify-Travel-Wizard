@@ -104,7 +104,6 @@ function postAirline() {
       },
       xhrFields: {withCredentials: true},
       success: (response) => {
-          alert("worked");
         }
     });
 }
