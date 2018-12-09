@@ -39,12 +39,12 @@ function buildHome() {
     },
     xhrFields: {withCredentials: true},
     success: (response) => {
-        alert('worked');
-      }
-    });
-    buildAirline();
-  })
+    }
+  });
+  buildAirline();
+});
 }
+
 
 
 
@@ -74,7 +74,20 @@ function buildAirline() {
 
 
   let create_curr_airline_div = (airline) => {
-	  let airdiv = $('<div class="airline_name" id="'+ airline.name + '"></div>');
+	  let airdiv = $('<div class="airline" id="'+ airline.id + '"></div>');
+    airdiv.append('<div class="airline_name">' + airline.name + '</div>');
+    console.log(airline.logo_url);
+    if (airline.logo_url == null || airline.logo_url === "") {
+      
+    } else {
+      airdiv.append('<img src=' + airline.logo_url + "></div>");
+    }
+    if (airline.info == null || airline.info === "") {
+
+    } else {
+      airdiv.append('<div class="air_info">' + airline.info + '</div>');
+    }
+
 	  return airdiv;
   }
 
