@@ -39,18 +39,10 @@ function buildHome() {
     },
     xhrFields: {withCredentials: true},
     success: (response) => {
-<<<<<<< HEAD
     }
   });
   buildAirline();
 });
-=======
-
-      }
-    });
-    buildAirline();
-  });
->>>>>>> 9c86860e8d6b3c46213c17e5ded4703838836192
 }
 
 
