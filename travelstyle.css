@@ -29,13 +29,76 @@ div {
   text-align: center;
 }
 
+.contain {
+  display:inline-block;
+  background-color: #628463;
+  max-width: 650px;
+  width:500px;
+  max-height: 700px;
+  border: 5px #3e5634;
+  border-style:ridge;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  text-align: center;
+  border: solid #b4d1af;
+  border-style: inset;
+}
+
+.airline {
+  background-color: #c1e0bc;
+  color: rgba(119, 137, 117, 0.8);
+  text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;
+  padding-top: 30px;
+  border-radius: 20px;
+  padding-bottom: 30px;
+  max-width: 300px;
+  margin: auto;
+  border: solid #b4d1af;
+  border-style: outset;
+}
+
+.airline:hover {
+  border-style: inset;
+}
+
+.air_info {
+  font-size: 11pt;
+}
+#currAir {
+  overflow: scroll;
+}
+#creatAir {
+  width:300px;
+}
+
+h1 {
+  font-size: 20pt;
+  background-color: #c1e0bc;
+  color: rgba(119, 137, 117, 0.8);
+  text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;
+  padding-bottom: 5px;
+  border-radius: 15px;
+}
+
+img {
+  max-width: 300px;
+}
+
 button {
   color: rgba(119, 137, 117, 0.8);
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bolder;
   text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;
   background-color: #c1e0bc;
   font-size: 15pt;
   width: 100px;
-  height:30px;
+  height:35px;
+  border: solid #b4d1af;
+  border-style: outset;
+}
+button:hover {
+  border-style: inset;
 }
 span {
   width: 30px;
