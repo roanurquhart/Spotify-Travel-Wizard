@@ -43,7 +43,7 @@ function buildAirline() {
       alert('here');
     }
   });
-)
+
   let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Airline Name"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Name"></textarea><br>';
   let but = '<button type="button" class="newAir_btn" onclick="postAirline">Create</button>';
   let divii = '<div id="creatAir">'+ form+but +'</div>';
