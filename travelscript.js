@@ -10,6 +10,9 @@ function login() {
   window.location = log_url;
 }
 
+/*--------------------------------Build HOME--------------------------------*/
+
+
 function buildHome() {
   let spot_box = '<div class="spotify_container"><p class="spotify_text">Connect to Spotify</p><button type="button" class="spotify_ajax" onclick="login(); return false;">Connect</button></div>';
   let header = '<header class="page_head">The Sound of Travel<header>';
@@ -26,7 +29,7 @@ function buildHome() {
   $('.evil').on("click", function() {
     $.ajax(api_base + 'sessions',
       {
-    type: 'GET',
+    type: 'POST',
     dataType: 'json',
     data: {
       'user': {
@@ -42,6 +45,12 @@ function buildHome() {
     buildAirline();
   })
 }
+
+
+
+
+/*--------------------------------BUILD AIRLINE PAGE--------------------------------*/
+
 
 function buildAirline() {
   let body = $('body');
@@ -99,3 +108,10 @@ function postAirline() {
         }
     });
 }
+
+
+
+
+
+
+/*--------------------------------BUILD TRAVELER PAGE--------------------------------*/
