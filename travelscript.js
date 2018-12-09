@@ -76,5 +76,26 @@ function buildAirline() {
   body.append(chooseAir);
   body.append(divi);
   body.append(divii);
+}
 
+function postAirline() {
+  let name = document.getElementById('Airname').value;
+  let logo = document.getElementById('logoUrl').value;
+  let info = document.getElementById('Airinfo').value;
+  $.ajax(api_base + 'airlines',
+    {
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        "airline": {
+                "name": name,
+                "logo_url": logo,
+                "info": info
+              }
+      },
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+          alert("worked");
+        }
+    });
 }
