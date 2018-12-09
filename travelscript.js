@@ -26,7 +26,7 @@ function buildHome() {
   $('.evil').on("click", function() {
     $.ajax(api_base + 'sessions',
       {
-    type: 'GET',
+    type: 'POST',
     dataType: 'json',
     data: {
       'user': {
@@ -95,7 +95,6 @@ function postAirline() {
       },
       xhrFields: {withCredentials: true},
       success: (response) => {
-          alert("worked");
         }
     });
 }
