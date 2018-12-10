@@ -170,7 +170,7 @@ function buildFlight(airline_id) {
 
 	  return flightdiv;
   }
-
+  let or = '<h2>OR</h2><h3>Create a New Flight</h3>';
   let form = '<textarea id="departure_time" cols="40" rows="1" placeholder="Departure Time"></textarea><br><textarea id="arrival_time" cols="40" rows="1" placeholder="Arrival Time"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Number"></textarea><br>';
   let destination_div = '<div class="aircont departure"></div>';
   let arrival_div = '<div class="aircont arrival"></div>';
@@ -178,6 +178,7 @@ function buildFlight(airline_id) {
   let departure_header = '<h1 class="depart_head">Departing Airport</h1>';
   let arrival_header = '<h1 class="arrival_head">Arriving Airport</h1>';
 
+  body.append(or);
   body.append(destination_div);
   body.append(arrival_div);
   $(".aircont.departure").append(departure_header);

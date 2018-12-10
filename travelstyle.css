@@ -41,14 +41,12 @@ div {
   max-width: 650px;
   width:500px;
   max-height: 700px;
-  border: 5px #3e5634;
-  border-style:ridge;
   padding-left: 5px;
   padding-right: 5px;
   padding-bottom: 10px;
   text-align: center;
   border: solid #b4d1af;
-  border-style: inset;
+  border-radius: 20px;
 }
 
 #currFlights {
@@ -57,10 +55,11 @@ div {
   text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;
   border-radius: 20px;
   max-height: 300px;
+  max-width: 1100px;
   margin: auto;
   border: solid #b4d1af;
-  border-style: inset;
   overflow: auto;
+  padding: 5px;
 }
 
 .flight {
@@ -74,6 +73,10 @@ div {
   border-style: outset;
 }
 
+.flight:hover {
+  border-style: inset;
+}
+
 .aircont {
   background-color: #628463;
   color: rgba(119, 137, 117, 0.8);
@@ -82,9 +85,9 @@ div {
   max-width: 300px;
   margin: auto;
   border: solid #b4d1af;
-  border-style: inset;
   display:inline-block;
   overflow: auto;
+  padding: 5px;
 }
 .airport.selected {
   background-color: yellow;
@@ -144,6 +147,7 @@ div {
 }
 #currAir {
   overflow: auto;
+  max-height:400px;
 }
 #creatAir {
   width:300px;
