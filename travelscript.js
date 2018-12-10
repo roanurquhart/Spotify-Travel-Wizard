@@ -6,6 +6,7 @@ let log_url = 'https://accounts.spotify.com/authorize?client_id=058d8c0bc3fd40ba
 
 let api_base = 'http://comp426.cs.unc.edu:3001/';
 
+let curr_air_id = 0;
 function login() {
   window.location = log_url;
 }
@@ -139,6 +140,7 @@ function postAirline() {
 /*--------------------------------BUILD FLIGHT PAGE--------------------------------*/
 
 function buildFlight(airline_id) {
+  curr_air_id = airline_id;
   let body = $('body');
   body.empty();
 
@@ -146,7 +148,7 @@ function buildFlight(airline_id) {
   body.append(chooseFlight);
   let divi = '<div id="currFlights"></div';
   body.append(divi);
-  $.ajax(api_base + 'flights',
+  $.ajax(api_base + 'flights?filter[airline_id]='+airline_id,
     {
   type: 'GET',
   dataType: 'json',
@@ -161,18 +163,20 @@ function buildFlight(airline_id) {
   });
 
   let create_curr_flight = (flight) => {
+    let depart_time = flight.departs_at.slice(11,16);
+    let arrive_time = flight.arrives_at.slice(11,16);
 	  let flightdiv = $('<div class="flight" id="'+ flight.id + '"></div>');
     flightdiv.append('<div class="dep_id">' + "id: " + flight.id + '</div>');
-    flightdiv.append('<div class="dep_time">' + "Departure time: " + flight.departs_at + '</div>');
-    flightdiv.append('<div class="arr_time">' +  "Arrival time: " + flight.arrives_at + '</div>');
+    flightdiv.append('<div class="dep_time" id="'+ depart_time + '">' + "Departure time: " + depart_time + '</div>');
+    flightdiv.append('<div class="arr_time" id ="'+ arrive_time +'">' +  "Arrival time: " + arrive_time + '</div>');
     flightdiv.append('<div class="number">' + "Number: " + flight.number + '</div>');
 
 	  return flightdiv;
   }
 
   let form = '<textarea id="departure_time" cols="40" rows="1" placeholder="Departure Time"></textarea><br><textarea id="arrival_time" cols="40" rows="1" placeholder="Arrival Time"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Number"></textarea><br>';
-  let destination_div = '<div class="destination"></div>';
-  let arrival_div = '<div class="arrival"></div>';
+  let destination_div = '<div class="aircont departure"></div>';
+  let arrival_div = '<div class="aircont arrival"></div>';
   body.append(destination_div);
   body.append(arrival_div);
   $.ajax(api_base + 'airports',
@@ -184,7 +188,6 @@ function buildFlight(airline_id) {
           let airports_array = response;
           for (let i =0; i < airports_array.length; i++) {
             let airportdiv = create_curr_airport(airports_array[i]);
-            alert("here");
             $('.destination').append(airportdiv);
             $('.arrival').append(airportdiv);
           }
@@ -192,17 +195,42 @@ function buildFlight(airline_id) {
 
     });
   let create_curr_airport = (airport) => {
-    let airportdiv = '<div class="airport" id=' + airport.id + '>' + airport.name + ' ' + airport.id + '</div>';
+    let airportdiv = '<div class="airport" id=' + airport.id + '>' + airport.name +'</div>';
     return airportdiv;
   }
   let but = '<button type="button" class="newFlight_btn" onclick="postFlight()">Create</button>';
   let divii = '<div id="createFlight">'+ form+but +'</div>';
   body.append(divii);
-  alert("got here");
 }
 
 function postFlight() {
+  let selected_ports = document.getElementsByClassName('selected');
+  let departID = selected_ports[0].id;
+  let arriveID = selected_ports[1].id;
 
+  let departT = document.getElementbyId('departure_time').value;
+  let arriveT = document.getElementById('arrival_time').value;
+  let flnum = document.getElementById('Airinfo').value;
+
+  $.ajax(api_base + 'flights',
+    {
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        "flights": {
+                "departs_at": departT,
+                "arrives_at": arriveT,
+                "number": flnum,
+                "depature_id": departID,
+                "arrival_id": arriveID,
+                "airline_id": curr_air_id
+              }
+      },
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+        buildFlight(curr_air_id);
+        }
+    });
 }
 
 
