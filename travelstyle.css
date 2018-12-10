@@ -47,15 +47,14 @@ div {
 .aircont {
   background-color: #628463;
   color: rgba(119, 137, 117, 0.8);
-  text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;
-  padding-top: 30px;
+  text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;;
   border-radius: 20px;
-  padding-bottom: 30px;
   max-width: 300px;
   margin: auto;
   border: solid #b4d1af;
   border-style: inset;
   display:inline-block;
+  overflow: scroll;
 }
 .airport.selected {
   background-color: yellow;
@@ -65,6 +64,7 @@ div {
 
 .depart_head {
   color: black;
+
 }
 .arrival_head {
   color: black;
