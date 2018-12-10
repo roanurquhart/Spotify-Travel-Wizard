@@ -163,10 +163,10 @@ function buildFlight(airline_id) {
     let depart_time = flight.departs_at.slice(11,16);
     let arrive_time = flight.arrives_at.slice(11,16);
 	  let flightdiv = $('<div class="flight" id="'+ flight.id + '"></div>');
-    flightdiv.append('<div class="dep_id">' + "id: " + flight.id + '</div>');
-    flightdiv.append('<div class="dep_time" id="'+ depart_time + '">' + "Departure time: " + depart_time + '</div>');
-    flightdiv.append('<div class="arr_time" id ="'+ arrive_time +'">' +  "Arrival time: " + arrive_time + '</div>');
-    flightdiv.append('<div class="number">' + "Number: " + flight.number + '</div>');
+    flightdiv.append('<p class="dep_id">' + "id: " + flight.id + '</p>');
+    flightdiv.append('<p class="dep_time" id="'+ depart_time + '">' + "Departure time: " + depart_time + '</p>');
+    flightdiv.append('<p class="arr_time" id ="'+ arrive_time +'">' +  "Arrival time: " + arrive_time + '</p>');
+    flightdiv.append('<p class="number">' + "Number: " + flight.number + '</p>');
 
 	  return flightdiv;
   }
@@ -220,9 +220,9 @@ function postFlight() {
   let departID = selected_ports[0].id;
   let arriveID = selected_ports[1].id;
 
-  let departT = document.getElementbyId('departure_time').value;
-  let arriveT = document.getElementById('arrival_time').value;
-  let flnum = document.getElementById('Airinfo').value;
+  let departT = $('#departure_time').val();
+  let arriveT = $('#arrival_time').val();
+  let flnum = $('#Airinfo').val();
 
 
   $.ajax(api_base + 'flights',
@@ -230,11 +230,11 @@ function postFlight() {
       type: 'POST',
       dataType: 'json',
       data: {
-        "flights": {
+        "flight": {
                 "departs_at": departT,
                 "arrives_at": arriveT,
                 "number": flnum,
-                "depature_id": departID,
+                "departure_id": departID,
                 "arrival_id": arriveID,
                 "airline_id": curr_air_id
               }
