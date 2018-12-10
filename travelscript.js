@@ -57,7 +57,16 @@ function buildAirline() {
   body.empty();
 
   let chooseAir = "<header>Select Your Airline</header>";
-  let divi = '<div id="currAir"></div';
+  let divi = '<div class="contain" id="currAir"><h1>Choose an exisiting Airline</h1></div';
+
+  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name (Required)"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Logo Url"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Info"></textarea><br>';
+  let but = '<button type="button" class="newAir_btn" onclick="postAirline()">Create</button>';
+  let divii = '<div class="contain" id="creatAir"><h1>Create a new Airline</h1>'+ form+but +'</div>';
+  body.append(chooseAir);
+  body.append(divi);
+  body.append('<header>OR</header>')
+  body.append(divii);
+
   $.ajax(api_base + 'airlines',
     {
   type: 'GET',
@@ -69,6 +78,7 @@ function buildAirline() {
         let airdiv = create_curr_airline_div(airline_array[i]);
 
         $('#currAir').append(airdiv);
+        $('#currAir').append('<br>');
       }
       $('.airline').on("click", function() {
         let airline_id = $(this).attr("id");
@@ -96,13 +106,6 @@ function buildAirline() {
 	  return airdiv;
   }
 
-
-  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name (Required)"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Logo Url"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Info"></textarea><br>';
-  let but = '<button type="button" class="newAir_btn" onclick="postAirline()">Create</button>';
-  let divii = '<div id="creatAir">'+ form+but +'</div>';
-  body.append(chooseAir);
-  body.append(divi);
-  body.append(divii);
 }
 
 function postAirline() {
@@ -130,6 +133,7 @@ function postAirline() {
     document.getElementById('Airname').value = "";
     document.getElementById('logoUrl').value = "";
     document.getElementById('Airinfo').value = "";
+    buildAirline();
 }
 
 /*--------------------------------BUILD FLIGHT PAGE--------------------------------*/
