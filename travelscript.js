@@ -1,5 +1,5 @@
 $(document).ready(function () {
-buildHome()
+buildHome();
 });
 
 let log_url = 'https://accounts.spotify.com/authorize?client_id=058d8c0bc3fd40bab5e2d2cf01fc8bc1&redirect_uri=file%3A%2F%2F%2FUsers%2Froanroan%2FDocuments%2F3rd%2520Year%2520-%25201st%2520Semester%2FCOMP%2520426%2FFinalProject%2Ftravel.html&scope=user-read-private%20user-read-email&response_type=token&state=123';
@@ -76,9 +76,15 @@ function buildAirline() {
       let airline_array = response;
       for (let i =0; i < airline_array.length; i++) {
         let airdiv = create_curr_airline_div(airline_array[i]);
+
         $('#currAir').append(airdiv);
         $('#currAir').append('<br>');
       }
+      $('.airline').on("click", function() {
+        let airline_id = $(this).attr("id");
+        buildFlight(airline_id);
+
+      });
     }
   });
 
@@ -97,7 +103,6 @@ function buildAirline() {
     } else {
       airdiv.append('<div class="air_info">' + airline.info + '</div>');
     }
-
 	  return airdiv;
   }
 
@@ -129,6 +134,75 @@ function postAirline() {
     document.getElementById('logoUrl').value = "";
     document.getElementById('Airinfo').value = "";
     buildAirline();
+}
+
+/*--------------------------------BUILD FLIGHT PAGE--------------------------------*/
+
+function buildFlight(airline_id) {
+  let body = $('body');
+  body.empty();
+
+  let chooseFlight = "<header>Select Your Flight</header>";
+  body.append(chooseFlight);
+  let divi = '<div id="currFlights"></div';
+  body.append(divi);
+  $.ajax(api_base + 'flights',
+    {
+  type: 'GET',
+  dataType: 'json',
+  xhrFields: {withCredentials: true},
+  success: (response) => {
+      let flights_array = response;
+      for (let i =0; i < flights_array.length; i++) {
+        let flightdiv = create_curr_flight(flights_array[i]);
+        $('#currFlights').append(flightdiv);
+      }
+    }
+  });
+
+  let create_curr_flight = (flight) => {
+	  let flightdiv = $('<div class="flight" id="'+ flight.id + '"></div>');
+    flightdiv.append('<div class="dep_id">' + "id: " + flight.id + '</div>');
+    flightdiv.append('<div class="dep_time">' + "Departure time: " + flight.departs_at + '</div>');
+    flightdiv.append('<div class="arr_time">' +  "Arrival time: " + flight.arrives_at + '</div>');
+    flightdiv.append('<div class="number">' + "Number: " + flight.number + '</div>');
+
+	  return flightdiv;
+  }
+
+  let form = '<textarea id="departure_time" cols="40" rows="1" placeholder="Departure Time"></textarea><br><textarea id="arrival_time" cols="40" rows="1" placeholder="Arrival Time"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Number"></textarea><br>';
+  let destination_div = '<div class="destination"></div>';
+  let arrival_div = '<div class="arrival"></div>';
+  body.append(destination_div);
+  body.append(arrival_div);
+  $.ajax(api_base + 'airports',
+    {
+      type: 'GET',
+      dataType: 'json',
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+          let airports_array = response;
+          for (let i =0; i < airports_array.length; i++) {
+            let airportdiv = create_curr_airport(airports_array[i]);
+            alert("here");
+            $('.destination').append(airportdiv);
+            $('.arrival').append(airportdiv);
+          }
+        }
+
+    });
+  let create_curr_airport = (airport) => {
+    let airportdiv = '<div class="airport" id=' + airport.id + '>' + airport.name + ' ' + airport.id + '</div>';
+    return airportdiv;
+  }
+  let but = '<button type="button" class="newFlight_btn" onclick="postFlight()">Create</button>';
+  let divii = '<div id="createFlight">'+ form+but +'</div>';
+  body.append(divii);
+  alert("got here");
+}
+
+function postFlight() {
+
 }
 
 
