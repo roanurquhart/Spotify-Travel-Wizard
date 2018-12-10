@@ -59,15 +59,13 @@ function buildAirline() {
 
   let chooseAir = "<header>Select Your Airline</header>";
   let divi = '<div class="contain" id="currAir"><h1>Choose an exisiting Airline</h1></div';
-
-  let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name (Required)"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Logo Url"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Info"></textarea><br>';
+   let form = '<textarea id="Airname" cols="40" rows="1" placeholder="Airline Name (Required)"></textarea><br><textarea id="logoUrl" cols="40" rows="1" placeholder="Logo Url"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Airline Info"></textarea><br>';
   let but = '<button type="button" class="newAir_btn" onclick="postAirline()">Create</button>';
   let divii = '<div class="contain" id="creatAir"><h1>Create a new Airline</h1>'+ form+but +'</div>';
   body.append(chooseAir);
   body.append(divi);
   body.append('<header>OR</header>')
   body.append(divii);
-
   $.ajax(api_base + 'airlines',
     {
   type: 'GET',
@@ -106,7 +104,6 @@ function buildAirline() {
     }
 	  return airdiv;
   }
-
 }
 
 function postAirline() {
@@ -177,8 +174,14 @@ function buildFlight(airline_id) {
   let form = '<textarea id="departure_time" cols="40" rows="1" placeholder="Departure Time"></textarea><br><textarea id="arrival_time" cols="40" rows="1" placeholder="Arrival Time"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Number"></textarea><br>';
   let destination_div = '<div class="aircont departure"></div>';
   let arrival_div = '<div class="aircont arrival"></div>';
+
+  let departure_header = '<h1 class="depart_head">Departing Airport</h1>';
+  let arrival_header = '<h1 class="arrival_head">Arriving Airport</h1>';
+
   body.append(destination_div);
   body.append(arrival_div);
+  $(".aircont.departure").append(departure_header);
+  $(".aircont.arrival").append(arrival_header);
   $.ajax(api_base + 'airports',
     {
       type: 'GET',
@@ -188,9 +191,18 @@ function buildFlight(airline_id) {
           let airports_array = response;
           for (let i =0; i < airports_array.length; i++) {
             let airportdiv = create_curr_airport(airports_array[i]);
-            $('.destination').append(airportdiv);
+
+            $('.departure').append(airportdiv);
+
             $('.arrival').append(airportdiv);
           }
+          $('.airport').on("click", function() {
+            if ($(this).hasClass("selected")) {
+              $(this).removeClass("selected");
+            } else {
+              $(this).addClass("selected");
+            }
+          })
         }
 
     });
@@ -211,6 +223,7 @@ function postFlight() {
   let departT = document.getElementbyId('departure_time').value;
   let arriveT = document.getElementById('arrival_time').value;
   let flnum = document.getElementById('Airinfo').value;
+
 
   $.ajax(api_base + 'flights',
     {
