@@ -44,6 +44,25 @@ function buildHome() {
   });
   buildAirline();
 });
+
+$('.good').on("click", function() {
+  $.ajax(api_base + 'sessions',
+    {
+  type: 'POST',
+  dataType: 'json',
+  data: {
+    'user': {
+      'username': 'roanandwill',
+      'password': 'ajaxonem'
+    }
+  },
+  xhrFields: {withCredentials: true},
+  success: (response) => {
+  }
+});
+buildTraveler();
+});
+
 }
 
 
@@ -312,3 +331,7 @@ let create_up_flight = (flight) => {
 
 
 /*--------------------------------BUILD TRAVELER PAGE--------------------------------*/
+
+function buildTraveler() {
+
+}
