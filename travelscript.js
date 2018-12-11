@@ -58,10 +58,9 @@ $('.good').on("click", function() {
   },
   xhrFields: {withCredentials: true},
   success: (response) => {
-    buildTraveler();
   }
 });
-buildAirline();
+buildTraveler();
 });
 
 }
@@ -275,5 +274,5 @@ function postFlight() {
 /*--------------------------------BUILD TRAVELER PAGE--------------------------------*/
 
 function buildTraveler() {
-  
+
 }
