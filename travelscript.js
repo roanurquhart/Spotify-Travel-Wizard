@@ -11,7 +11,7 @@ function login() {
   window.location = log_url;
 }
 
-/*--------------------------------Build HOME--------------------------------*/
+/*--------------------------------BUILD HOME--------------------------------*/
 
 
 function buildHome() {
@@ -175,20 +175,14 @@ function buildFlight(airline_id) {
         let flightdiv = create_curr_flight(flights_array[i]);
         $('#currFlights').append(flightdiv);
       }
+      $('.flight').on("click", function() {
+        let flight_id = $(this).attr("id");
+        buildUpdateF(flight_id);
+      });
     }
   });
 
-  let create_curr_flight = (flight) => {
-    let depart_time = flight.departs_at.slice(11,16);
-    let arrive_time = flight.arrives_at.slice(11,16);
-	  let flightdiv = $('<div class="flight" id="'+ flight.id + '"></div>');
-    flightdiv.append('<p class="dep_id">' + "id: " + flight.id + '</p>');
-    flightdiv.append('<p class="dep_time" id="'+ depart_time + '">' + "Departure time: " + depart_time + '</p>');
-    flightdiv.append('<p class="arr_time" id ="'+ arrive_time +'">' +  "Arrival time: " + arrive_time + '</p>');
-    flightdiv.append('<p class="number">' + "Number: " + flight.number + '</p>');
 
-	  return flightdiv;
-  }
   let or = '<h2>OR</h2><h3>Create a New Flight</h3>';
   let form = '<textarea id="departure_time" cols="40" rows="1" placeholder="Departure Time"></textarea><br><textarea id="arrival_time" cols="40" rows="1" placeholder="Arrival Time"></textarea><br><textarea id="Airinfo" cols="40" rows="2" placeholder="Number"></textarea><br>';
   let destination_div = '<div class="aircont departure"></div>';
@@ -235,6 +229,18 @@ function buildFlight(airline_id) {
   body.append(divii);
 }
 
+let create_curr_flight = (flight) => {
+  let depart_time = flight.departs_at.slice(11,16);
+  let arrive_time = flight.arrives_at.slice(11,16);
+  let flightdiv = $('<div class="flight" id="'+ flight.id + '"></div>');
+  flightdiv.append('<p class="dep_id">' + "id: " + flight.id + '</p>');
+  flightdiv.append('<p class="dep_time" id="'+ depart_time + '">' + "Departure time: " + depart_time + '</p>');
+  flightdiv.append('<p class="arr_time" id ="'+ arrive_time +'">' +  "Arrival time: " + arrive_time + '</p>');
+  flightdiv.append('<p class="number">' + "Number: " + flight.number + '</p>');
+
+  return flightdiv;
+}
+
 function postFlight() {
   let selected_ports = document.getElementsByClassName('selected');
   let departID = selected_ports[0].id;
@@ -267,8 +273,61 @@ function postFlight() {
 }
 
 
+/*--------------------------------BUILD FLIGHT UPDATE PAGE--------------------------------*/
+function buildUpdateF(flight_id) {
+  let body = $('body');
+  body.empty();
+
+  let updateFlight = "<header>Update Flight Details</header>";
+  body.append(updateFlight);
+  let divi = '<div id="currFlight"></div';
+  body.append(divi);
+
+  $.ajax(api_base + 'flights/'+flight_id,
+    {
+  type: 'GET',
+  dataType: 'json',
+  xhrFields: {withCredentials: true},
+  success: (response) => {
+      let flightdiv = create_up_flight(response);
+      $('#currFlight').append(flightdiv);
+      let texts = '<br><br><br><textarea class="update" id="up_dep" cols="40" rows="1" placeholder="Update Departure Time"></textarea><br><br>';
+      texts += '<textarea class="update" id="up_ar" cols="40" rows="1" placeholder="Update Arrival Time"></textarea><br><br>';
+      texts += '<textarea class="update" id="up_num" cols="40" rows="1" placeholder="Update Flight Number"></textarea><br><br>';
+      texts += '<textarea class="update" id="up_pid" cols="40" rows="1" placeholder="Update Plane ID"></textarea><br><br>';
+      texts += '<textarea class="update" id="up_inf" cols="40" rows="1" placeholder="Update Info"></textarea>';
+      let update = '<div class="update_contain">'+ texts +'</div>';
+      $('#currFlight').append(update);
+      $('#up_dep').on('keyup', function(){
+            $('.single.dep_time').text($('#up_dep').val());
+        });
+    }
+  });
 
 
+}
+
+let create_up_flight = (flight) => {
+  let depart_time = flight.departs_at.slice(11,16);
+  let arrive_time = flight.arrives_at.slice(11,16);
+  let flightdiv = $('<div class="flightDeets" id="'+ flight.id + '"></div>');
+  flightdiv.append('<label>id: </label><p class="single dep_id">'+ flight.id + '</p><br>');
+  flightdiv.append('<label>Departure time: </label><p class="single dep_time" id="'+ depart_time + '">' +depart_time + '</p><br>');
+  flightdiv.append('<label>Arrival time: </label><p class="single arr_time" id ="'+ arrive_time +'">'+ arrive_time + '</p><br>');
+  flightdiv.append('<label>Number: </label><p class="single number">'+ flight.number + '</p><br>');
+  if (flight.plane_id == null || flight.plane_id === "") {
+    flightdiv.append('<label>Plane Id: </label><p class="single plane_id">Plane Id: None</p><br>');
+  } else {
+    flightdiv.append('<label>Plane Id: </label><p class="single plane_id">'+ 'Plane Id: '+ flight.plane_id +'</p><br>');
+  }
+  if (flight.info == null || flight.info === "") {
+    flightdiv.append('<label>Info: </label><p class="single info">Info: None</p>');
+  } else {
+    flightdiv.append('<label>Info: </label><p class="single info">'+ 'Info: '+ flight.info +'</p>');
+  }
+
+  return flightdiv;
+}
 
 
 /*--------------------------------BUILD TRAVELER PAGE--------------------------------*/
