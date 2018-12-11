@@ -19,6 +19,7 @@ p {
   padding-right: 5px;
   padding-left: 5px;
 }
+
 .choices {
   max-width: 450px;
   color: rgba(119, 137, 117, 0.8);
@@ -155,21 +156,38 @@ div {
 }
 
 .flightDeets {
-  background-color: #628463;
-  max-width: 650px;
-  width:500px;
+  background-color:  #6f9170;
+  max-width: 500px;
+  width:400px;
   max-height: 800px;
   padding-left: 5px;
   padding-right: 5px;
   padding-bottom: 10px;
   text-align: left;
-  border: solid #b4d1af;
+  border: solid  #6f9170;
   border-radius: 20px;
-  text-shadow: 1px 4px 6px #628463, 0 0 0 #000, 1px 4px 6px #628463;
+  text-shadow: 1px 4px 6px  #6f9170, 0 0 0 #000, 1px 4px 6px  #6f9170;
+  float:left;
+}
+
+.update_contain {
+  float:left;
+}
+
+.update {
+  padding: 13px;
+  font-size: 15pt;
+}
+
+textarea {
+  background-color: #a1c4a1;
+  border-color: #628463;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .single {
-  
+
 }
 
 h1 {
