@@ -7,16 +7,13 @@ let log_url = 'https://accounts.spotify.com/authorize?client_id=058d8c0bc3fd40ba
 let api_base = 'http://comp426.cs.unc.edu:3001/';
 
 let curr_air_id = 0;
-function login() {
-  window.location = log_url;
-}
+
 
 /*--------------------------------BUILD HOME--------------------------------*/
 
 
 function buildHome() {
-  let spot_box = '<div class="spotify_container"><p class="spotify_text">Connect to Spotify</p><button type="button" class="spotify_ajax" onclick="login(); return false;">Connect</button></div>';
-  let header = '<header class="page_head">The Sound of Travel<header>';
+  let header = '<header class="page_head">Travel Playground<header>';
   let choose = '<p>Choose your destiny</p>';
   let choice_box = '<div id="choice_box"><p class="choices evil"><span id="evil">Air Travel Overlord</span></p><span>   </span><p class="choices good"><span id="good">Naive Vacationer</span></p></div>'
 
@@ -85,6 +82,7 @@ function buildAirline() {
   body.append(divi);
   body.append('<header>OR</header>')
   body.append(divii);
+  body.append('<br><br><button type="button" class="back" onclick="buildHome()">Home</button>');
   $.ajax(api_base + 'airlines',
     {
   type: 'GET',
@@ -227,6 +225,7 @@ function buildFlight(airline_id) {
   let but = '<button type="button" class="newFlight_btn" onclick="postFlight()">Create</button>';
   let divii = '<div id="createFlight">'+ form+but +'</div>';
   body.append(divii);
+  body.append('<br><br><button type="button" class="back" onclick="buildAirline()">Back</button>');
 }
 
 let create_curr_flight = (flight) => {
@@ -351,9 +350,13 @@ function buildUpdateF(flight_id) {
     }
   });
 
+  body.append('<br><br><button type="button" class="back" onclick="back()">Back</button>');
 
 }
 
+function back() {
+  buildFlight(curr_air_id);
+}
 function create_plane (plane) {
   let planediv = $('<div class="planeDeets" id="'+ plane.id + '"></div>');
   planediv.append('<label>'+plane.name+' </label><br><p id="'+plane.id+'">ID: '+plane.id+'</p>');
