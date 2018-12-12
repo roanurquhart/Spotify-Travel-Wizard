@@ -434,5 +434,117 @@ let create_up_flight = (flight) => {
 /*--------------------------------BUILD TRAVELER PAGE--------------------------------*/
 
 function buildTraveler() {
+  let body = $('body');
+  body.empty();
 
+  let chooseAir = "<header>Choose Your Origin and Destination</header>";
+  let departure_div = '<div class="aircont departure"></div>';
+  body.append(chooseAir);
+  body.append(departure_div);
+  let origin_id = '';
+  let destination_id = '';
+  $.ajax(api_base + 'airports',
+    {
+      type: 'GET',
+      dataType: 'json',
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+          let airports_array = response;
+          for (let i =0; i < airports_array.length; i++) {
+            let airportdiv = create_curr_airport(airports_array[i]);
+
+            $('.departure').append(airportdiv);
+          }
+          $('.airport').on("click", function() {
+            if ($(this).hasClass("selected")) {
+              $(this).removeClass("selected");
+            } else {
+              $(this).addClass("selected");
+              $(this).addClass("origin");
+              origin_id = $(this).attr("id");
+              let arrival_div = '<div class="aircont arrival"></div>';
+              body.append(arrival_div);
+              body.append('</br>');
+              $('body').append('<button type="button" class="searchFlight_btn">Search</button>');
+              $('.searchFlight_btn').on("click", function() {
+                buildFlightList(origin_id, destination_id);
+              })
+              $.ajax(api_base + 'airports',
+                {
+                  type: 'GET',
+                  dataType: 'json',
+                  xhrFields: {withCredentials: true},
+                  success: (response) => {
+                      let airports_array = response;
+                      for (let i =0; i < airports_array.length; i++) {
+                        let airportdiv = create_curr_airport(airports_array[i]);
+                        if (airports_array[i].id == origin_id) {
+
+                        } else {
+                          $('.arrival').append(airportdiv);
+                        }
+
+                      }
+                      $('.airport').on("click", function() {
+                        if ($(this).hasClass("selected")) {
+                          $(this).removeClass("selected");
+                        } else {
+                          $(this).addClass("selected");
+                          destination_id = $(this).attr("id");
+                        }
+                      })
+                    }
+
+                });
+            }
+          })
+        }
+    });
+    let create_curr_airport = (airport) => {
+      let airportdiv = '<div class="airport" id=' + airport.id + '>' + airport.name +'</div>';
+      return airportdiv;
+    }
+}
+function buildFlightList(origin_id, destination_id) {
+  let body = $('body');
+  body.empty();
+  let chooseFlight = "<header>List of Flights</header>";
+  body.append(chooseFlight);
+  $.ajax(api_base + 'flights?' + 'filter[departure_id]=' + origin_id + '&filter[arrival_id]=' + destination_id,
+    {
+  type: 'GET',
+  dataType: 'json',
+  xhrFields: {withCredentials: true},
+  success: (response) => {
+      let flights_array = response;
+      if (flights_array.length == 0) {
+        body.append('</br>');
+        body.append('<header>Sorry, there are no flights matching your selected origin and destination</header>');
+        body.append('</br>');
+        body.append('<button type="button" class="return_to_search">Back to Search</button>');
+        $('.return_to_search').on("click", function() {
+          buildTraveler();
+        })
+
+      } else {
+        let divi = '<div id="currFlights"></div';
+        body.append(divi);
+        for (let i =0; i < flights_array.length; i++) {
+          let flightdiv = create_curr_flight(flights_array[i]);
+          $('#currFlights').append(flightdiv);
+        }
+      }
+    }
+  });
+  let create_curr_flight = (flight) => {
+    let depart_time = flight.departs_at.slice(11,16);
+    let arrive_time = flight.arrives_at.slice(11,16);
+    let flightdiv = $('<div class="flight" id="'+ flight.id + '"></div>');
+    flightdiv.append('<p class="dep_id">' + "id: " + flight.id + '</p>');
+    flightdiv.append('<p class="dep_time" id="'+ depart_time + '">' + "Departure time: " + depart_time + '</p>');
+    flightdiv.append('<p class="arr_time" id ="'+ arrive_time +'">' +  "Arrival time: " + arrive_time + '</p>');
+    flightdiv.append('<p class="number">' + "Number: " + flight.number + '</p>');
+
+    return flightdiv;
+  }
 }
