@@ -209,8 +209,8 @@ function buildFlight(airline_id) {
             $('.arrival').append(airportdiv);
           }
           $('.airport').on("click", function() {
-            if ($(this).hasClass("selected")) {
-              $(this).removeClass("selected");
+            if ($(this).parent().children().hasClass("selected")) {
+              buildFlight(curr_air_id);
             } else {
               $(this).addClass("selected");
             }
@@ -438,9 +438,15 @@ let create_up_flight = (flight) => {
 
 function buildTraveler() {
   let body = $('body');
+  let origin_header = '<h1 class="depart_head">Origin</h1>';
+  let arrival_header = '<h1 class="arrival_head">Destination</h1>';
   body.empty();
-
+  $('body').prepend('<button type="button" class="home_btn">Home</button>');
+  $('.home_btn').on("click", function() {
+    buildHome();
+  });
   let chooseAir = "<header>Choose Your Origin and Destination</header>";
+
   let departure_div = '<div class="aircont departure"></div>';
   body.append(chooseAir);
   body.append(departure_div);
@@ -453,25 +459,27 @@ function buildTraveler() {
       xhrFields: {withCredentials: true},
       success: (response) => {
           let airports_array = response;
+          $('.departure').append(origin_header);
           for (let i =0; i < airports_array.length; i++) {
             let airportdiv = create_curr_airport(airports_array[i]);
 
             $('.departure').append(airportdiv);
           }
           $('.airport').on("click", function() {
-            if ($(this).hasClass("selected")) {
-              $(this).removeClass("selected");
+            if ($(this).parent().children().hasClass("selected")) {
+              buildTraveler();
             } else {
               $(this).addClass("selected");
               $(this).addClass("origin");
               origin_id = $(this).attr("id");
               let arrival_div = '<div class="aircont arrival"></div>';
               body.append(arrival_div);
+              $('.arrival').append(arrival_header);
               body.append('</br>');
               $('body').append('<button type="button" class="searchFlight_btn">Search</button>');
               $('.searchFlight_btn').on("click", function() {
                 buildFlightList(origin_id, destination_id);
-              })
+              });
               $.ajax(api_base + 'airports',
                 {
                   type: 'GET',
@@ -489,8 +497,8 @@ function buildTraveler() {
 
                       }
                       $('.airport').on("click", function() {
-                        if ($(this).hasClass("selected")) {
-                          $(this).removeClass("selected");
+                        if ($(this).parent().children().hasClass("selected")) {
+                          buildTraveler();
                         } else {
                           $(this).addClass("selected");
                           destination_id = $(this).attr("id");
@@ -511,6 +519,10 @@ function buildTraveler() {
 function buildFlightList(origin_id, destination_id) {
   let body = $('body');
   body.empty();
+  $('body').prepend('<button type="button" class="home_btn">Home</button>');
+  $('.home_btn').on("click", function() {
+    buildHome();
+  });
   let chooseFlight = "<header>List of Flights</header>";
   body.append(chooseFlight);
   $.ajax(api_base + 'flights?' + 'filter[departure_id]=' + origin_id + '&filter[arrival_id]=' + destination_id,
@@ -522,7 +534,7 @@ function buildFlightList(origin_id, destination_id) {
       let flights_array = response;
       if (flights_array.length == 0) {
         body.append('</br>');
-        body.append('<header>Sorry, there are no flights matching your selected origin and destination</header>');
+        body.append('<h1>Sorry, there are no flights matching your selected origin and destination</h1>');
         body.append('</br>');
         body.append('<button type="button" class="return_to_search">Back to Search</button>');
         $('.return_to_search').on("click", function() {
@@ -536,6 +548,11 @@ function buildFlightList(origin_id, destination_id) {
           let flightdiv = create_curr_flight(flights_array[i]);
           $('#currFlights').append(flightdiv);
         }
+        body.append('</br>');
+        body.append('<button type="button" class="return_to_search">Back to Search</button>');
+        $('.return_to_search').on("click", function() {
+          buildTraveler();
+        })
       }
     }
   });
