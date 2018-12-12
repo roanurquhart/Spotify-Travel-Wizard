@@ -533,6 +533,10 @@ function buildFlightList(origin_id, destination_id) {
           let flightdiv = create_curr_flight(flights_array[i]);
           $('#currFlights').append(flightdiv);
         }
+        body.append('<button type="button" class="return_to_search">Back to Search</button>');
+        $('.return_to_search').on("click", function() {
+          buildTraveler();
+        })
       }
     }
   });
