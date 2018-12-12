@@ -169,9 +169,48 @@ div {
   text-shadow: 1px 4px 6px  #6f9170, 0 0 0 #000, 1px 4px 6px  #6f9170;
   float:left;
 }
+.plane_up {
+  width: 425px;
+  max-width: 425px;
+  float: left;
+  background-color: #628463;
+  color: rgba(119, 137, 117, 0.8);
+  text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;;
+  border-radius: 20px;
+  border: solid #b4d1af;
+  overflow: auto;
+  height:225px;
+  max-height: 275px;
+}
+.planeDeets {
+  background-color: #c1e0bc;
+  color: rgba(119, 137, 117, 0.8);
+  text-shadow: 1px 4px 6px #c1e0bc, 0 0 0 #000, 1px 4px 6px #c1e0bc;
+  border-radius: 20px;
+  padding-top: 5px;
+  font-size: 12pt;
+  max-width: 350px;
+  margin: auto;
+}
+.ref_cont {
+  width: 425px;
+  max-width: 425px;
+  float:left;
+}
 
 .update_contain {
   float:left;
+  padding-right:5px;
+}
+
+.plane_contain {
+  padding-top: 15px;
+  padding-bottom: 10px; 
+}
+
+.sub_btn {
+  width: 200px;
+  height: 100px;
 }
 
 .update {

@@ -274,7 +274,9 @@ function postFlight() {
 
 
 /*--------------------------------BUILD FLIGHT UPDATE PAGE--------------------------------*/
+let curr_fl_id = '';
 function buildUpdateF(flight_id) {
+  curr_fl_id = flight_id;
   let body = $('body');
   body.empty();
 
@@ -291,20 +293,119 @@ function buildUpdateF(flight_id) {
   success: (response) => {
       let flightdiv = create_up_flight(response);
       $('#currFlight').append(flightdiv);
+
       let texts = '<br><br><br><textarea class="update" id="up_dep" cols="40" rows="1" placeholder="Update Departure Time"></textarea><br><br>';
       texts += '<textarea class="update" id="up_ar" cols="40" rows="1" placeholder="Update Arrival Time"></textarea><br><br>';
       texts += '<textarea class="update" id="up_num" cols="40" rows="1" placeholder="Update Flight Number"></textarea><br><br>';
       texts += '<textarea class="update" id="up_pid" cols="40" rows="1" placeholder="Update Plane ID"></textarea><br><br>';
       texts += '<textarea class="update" id="up_inf" cols="40" rows="1" placeholder="Update Info"></textarea>';
       let update = '<div class="update_contain">'+ texts +'</div>';
+
       $('#currFlight').append(update);
+
       $('#up_dep').on('keyup', function(){
             $('.single.dep_time').text($('#up_dep').val());
         });
+      $('#up_ar').on('keyup', function(){
+            $('.single.arr_time').text($('#up_ar').val());
+        });
+      $('#up_num').on('keyup', function(){
+            $('.single.number').text($('#up_num').val());
+        });
+      $('#up_pid').on('keyup', function(){
+            $('.single.plane_id').text($('#up_pid').val());
+        });
+      $('#up_inf').on('keyup', function(){
+            $('.single.info').text($('#up_inf').val());
+        });
+
+      let ref_cont = '<div class="ref_cont"></div>';
+      $('#currFlight').append(ref_cont);
+
+      $.ajax(api_base + 'planes',
+        {
+          type: 'GET',
+          dataType: 'json',
+          xhrFields: {withCredentials: true},
+          success: (response) => {
+              let mk_plane = '<div class="plane_up"><h1>Plane ID Reference</h1></div>';
+              $('.ref_cont').append(mk_plane);
+              let planes_array = response;
+              for (let i =0; i < planes_array.length; i++) {
+                let planediv = create_plane(planes_array[i]);
+                $('.plane_up').append(planediv);
+                $('.plane_up').append('<br>');
+              }
+              let text = '<textarea class="plane" id="nw_name" cols="40" rows="1" placeholder="Plane Name"></textarea>';
+              text += '<textarea class="plane" id="nw_info" cols="40" rows="1" placeholder="Plane Info"></textarea><br>';
+              text+= '<button type="button" class="newPla_btn" onclick="postPlane()">Create</button>'
+              let new_plane = '<div class="plane_contain">'+ text +'</div>';
+              $('.ref_cont').append('<header>Or</header>');
+              $('.ref_cont').append(new_plane);
+              let submit = '<button type="button" class="sub_btn" onclick="pushUpdate()">Submit All Updates</button>';
+              $('.ref_cont').append(submit);
+
+            }
+        });
+
     }
   });
 
 
+}
+
+function create_plane (plane) {
+  let planediv = $('<div class="planeDeets" id="'+ plane.id + '"></div>');
+  planediv.append('<label>'+plane.name+' </label><br><p id="'+plane.id+'">ID: '+plane.id+'</p>');
+  return planediv;
+}
+
+function pushUpdate() {
+  let depat = $('.single.dep_time').html();
+  let arat = $('.single.arr_time').html();
+  let num = $('.single.number').html();
+  let plid = $('.single.plane_id').html();
+  let inf = $('.single.info').html();
+  $.ajax(api_base + 'flights/'+curr_fl_id,
+    {
+      type: 'PUT',
+      dataType: 'json',
+      data: {
+        "flight": {
+                "departs_at": depat,
+                "arrives_at": arat,
+                "number": num,
+                "plane_id": plid,
+                "info": inf
+                  }
+      },
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+        buildUpdateF(curr_fl_id);
+        }
+    });
+
+}
+
+function postPlane() {
+  let name = document.getElementById('nw_name').value;
+  let info = document.getElementById('nw_info').value;
+
+  $.ajax(api_base + 'planes',
+    {
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        "plane": {
+                "name": name,
+                "info": info
+              }
+      },
+      xhrFields: {withCredentials: true},
+      success: (response) => {
+        buildUpdateF(curr_fl_id);
+        }
+    });
 }
 
 let create_up_flight = (flight) => {
@@ -316,14 +417,14 @@ let create_up_flight = (flight) => {
   flightdiv.append('<label>Arrival time: </label><p class="single arr_time" id ="'+ arrive_time +'">'+ arrive_time + '</p><br>');
   flightdiv.append('<label>Number: </label><p class="single number">'+ flight.number + '</p><br>');
   if (flight.plane_id == null || flight.plane_id === "") {
-    flightdiv.append('<label>Plane Id: </label><p class="single plane_id">Plane Id: None</p><br>');
+    flightdiv.append('<label>Plane Id: </label><p class="single plane_id">None</p><br>');
   } else {
-    flightdiv.append('<label>Plane Id: </label><p class="single plane_id">'+ 'Plane Id: '+ flight.plane_id +'</p><br>');
+    flightdiv.append('<label>Plane Id: </label><p class="single plane_id">'+ flight.plane_id +'</p><br>');
   }
   if (flight.info == null || flight.info === "") {
-    flightdiv.append('<label>Info: </label><p class="single info">Info: None</p>');
+    flightdiv.append('<label>Info: </label><p class="single info">None</p>');
   } else {
-    flightdiv.append('<label>Info: </label><p class="single info">'+ 'Info: '+ flight.info +'</p>');
+    flightdiv.append('<label>Info: </label><p class="single info">'+ flight.info +'</p>');
   }
 
   return flightdiv;
