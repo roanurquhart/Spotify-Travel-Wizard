@@ -536,7 +536,7 @@ function buildFlightList(origin_id, destination_id) {
         body.append('</br>');
         body.append('<h1>Sorry, there are no flights matching your selected origin and destination</h1>');
         body.append('</br>');
-        body.append('<button type="button" class="return_to_search">Back to Search</button>');
+        body.append('<button type="button" class="return_to_search">Back</button>');
         $('.return_to_search').on("click", function() {
           buildTraveler();
         })
@@ -549,7 +549,7 @@ function buildFlightList(origin_id, destination_id) {
           $('#currFlights').append(flightdiv);
         }
         body.append('</br>');
-        body.append('<button type="button" class="return_to_search">Back to Search</button>');
+        body.append('<button type="button" class="return_to_search">Back</button>');
         $('.return_to_search').on("click", function() {
           buildTraveler();
         })
